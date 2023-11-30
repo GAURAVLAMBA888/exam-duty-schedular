@@ -4,19 +4,19 @@ import Dropzone from 'react-dropzone';
 import './App.css';
 
 function App() {
-  const [number1, setNumber1] = useState('');
-  const [number2, setNumber2] = useState('');
+  const [starttime, setStarttime] = useState('');
+  const [duration, setDuration] = useState('');
   const [day, setDay] = useState('');
   const [semester, setSemester] = useState(1);
   const [req, setReq] = useState(1);
   const [res, setRes] = useState([]);
 
-  const handleNumber1Change = (e) => {
-    setNumber1(e.target.value);
+  const handleStarttimeChange = (e) => {
+    setStarttime(e.target.value);
   };
 
-  const handleNumber2Change = (e) => {
-    setNumber2(e.target.value);
+  const handleDurationChange = (e) => {
+    setDuration(e.target.value);
   };
   const handleSemesterChange = (e) => {
     setSemester(e.target.value);
@@ -57,8 +57,8 @@ function App() {
       const countConsecutiveX = (excelData) => {
         for (let i = 0; i < excelData.length; i++) {
           if(excelData[i].day == day){
-            if(number2 == 2){
-            if(excelData[i][number1] == "X" && excelData[i][(Number(number1)+1).toString()] == "X"){
+            if(duration == 2){
+            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X"){
               const arr = Object.values(excelData[i]);
               let count = 0;
               for(let i=0; i<arr.length; i++){
@@ -70,7 +70,7 @@ function App() {
             }
           }
           else{
-            if(excelData[i][number1] == "X" && excelData[i][(Number(number1)+1).toString()] == "X" && excelData[i][(Number(number1)+2).toString()] == "X"){
+            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X" && excelData[i][(Number(starttime)+2).toString()] == "X"){
               const arr = Object.values(excelData[i]);
               let count = 0;
               for(let i=0; i<arr.length; i++){
@@ -109,13 +109,13 @@ function App() {
       <div>
         <label>
           Start-Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="number" value={number1} onChange={handleNumber1Change} className='input-field'/>
+          <input type="number" value={starttime} onChange={handleStarttimeChange} className='input-field'/>
         </label>
       </div>
       <div>
         <label>
           Exam-Duration &nbsp;&nbsp;
-          <input type="number" value={number2} onChange={handleNumber2Change} className='input-field'/>
+          <input type="number" value={duration} onChange={handleDurationChange} className='input-field'/>
         </label>
       </div>
       <div>
