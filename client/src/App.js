@@ -124,7 +124,7 @@ function App() {
     <>
     <div className="navbar">
       <div className="navbar-left">
-          <span>KIIT - EXAM SCHEDULAR</span>
+          <span>KIIT - INVIGILATION DUTY SCHEDULAR</span>
       </div>
     </div>
     <div className="App">
@@ -176,12 +176,21 @@ function App() {
         </button>
       </div>
       <div>
-        <h3>List of Teachers:</h3>
-        <ul>
+        <h3>Teachers Available for Invigilation Duty:</h3>
+        <table>
+          <tr>
+            <th>Sr. No.</th>
+            <th>Name</th>
+            <th>Phone No.</th>
+          </tr>
           {res?.map((row, index) => (
-            <li key={index}>Name : {row.name} , Phone No. : {row.phone}</li>
+            <tr>
+              <td>{index+1}</td>
+              <td>{row.name}</td>
+              <td>{row.phone}</td>
+            </tr>
             ))}
-        </ul>
+        </table>
       </div>
     </div>
     </>
