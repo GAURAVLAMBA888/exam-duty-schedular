@@ -7,7 +7,7 @@ function App() {
   const [starttime, setStarttime] = useState('');
   const [duration, setDuration] = useState('');
   const [day, setDay] = useState('');
-  const [semester, setSemester] = useState(1);
+  const [semester, setSemester] = useState('');
   const [req, setReq] = useState(1);
   const [res, setRes] = useState([]);
 
@@ -41,53 +41,69 @@ function App() {
       const sheet = workbook.Sheets[sheetName];
       const excelData = XLSX.utils.sheet_to_json(sheet); 
 
-      for(let i=0; i<excelData.length; i++){
-        for(const property in excelData[i]){
-          if(property  != "name" && property != "phone" && excelData[i][property] != "X"){
-            const num = Number((excelData[i][property]).split(',')[1]?.charAt(0));
-            if(num == semester){
-              excelData[i][property] = "X";
+      const semarr = semester.split(',');
+
+      
+      for(let j = 0; j<semarr.length; j++){
+        for(let i=0; i<excelData.length; i++){
+          for(const property in excelData[i]){
+            if(property  != "name" && property != "phone" && excelData[i][property] != "X"){
+              const num = Number((excelData[i][property]).split(',')[3]?.charAt(0));
+              if(num == Number(semarr[j])){
+                excelData[i][property] = "X";
+              }
             }
           }
         }
       }
-      // console.log(excelData);
       const resData = [];
 
       const countConsecutiveX = (excelData) => {
         for (let i = 0; i < excelData.length; i++) {
           if(excelData[i].day == day){
-            if(duration == 2){
-            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X"){
-              const arr = Object.values(excelData[i]);
-              let count = 0;
-              for(let i=0; i<arr.length; i++){
-                if(arr[i] == "X"){
-                  count++;
+            if(duration == 1){
+              if(excelData[i][starttime] == "X"){
+                const arr = Object.values(excelData[i]);
+                let count = 0;
+                for(let i=0; i<arr.length; i++){
+                  if(arr[i] == "X"){
+                    count++;
+                  }
                 }
+                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
               }
-              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+            }
+            else if(duration == 2){
+              if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X"){
+                const arr = Object.values(excelData[i]);
+                let count = 0;
+                for(let i=0; i<arr.length; i++){
+                  if(arr[i] == "X"){
+                    count++;
+                  }
+                }
+                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+              }
+            }
+            else{
+              if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X" && excelData[i][(Number(starttime)+2).toString()] == "X"){
+                const arr = Object.values(excelData[i]);
+                let count = 0;
+                for(let i=0; i<arr.length; i++){
+                  if(arr[i] == "X"){
+                    count++;
+                  }
+                }
+                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+              }
+              }
             }
           }
-          else{
-            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X" && excelData[i][(Number(starttime)+2).toString()] == "X"){
-              const arr = Object.values(excelData[i]);
-              let count = 0;
-              for(let i=0; i<arr.length; i++){
-                if(arr[i] == "X"){
-                  count++;
-                }
-              }
-              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
-            }
-            }
-          }
-        }
 
         const sortedData = resData.slice().sort((a, b) => b.FreeTime - a.FreeTime );
         const slicedArray = sortedData.slice(0, req);
-        console.log(slicedArray);
-        setRes(slicedArray);
+        const reqData = slicedArray.map(({FreeTime, ...restData}) => restData);
+        setRes(reqData);
       };
       countConsecutiveX(excelData);
     };
@@ -105,6 +121,12 @@ function App() {
 
   
   return (
+    <>
+    <div className="navbar">
+      <div className="navbar-left">
+          <span>KIIT - EXAM SCHEDULAR</span>
+      </div>
+    </div>
     <div className="App">
       <div>
         <label>
@@ -121,7 +143,7 @@ function App() {
       <div>
         <label>
           Semester &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="number" value={semester} onChange={handleSemesterChange} className='input-field'/>
+          <input type="string" value={semester} onChange={handleSemesterChange} className='input-field'/>
         </label>
       </div>
       <div>
@@ -162,6 +184,7 @@ function App() {
         </ul>
       </div>
     </div>
+    </>
   );
 
 };

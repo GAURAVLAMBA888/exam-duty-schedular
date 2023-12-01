@@ -1,5 +1,20 @@
+.navbar{
+  height: 50px;
+  padding: 10px 20px;
+  display: flex;
+  background-color: white;
+  align-items: center;
+  z-index: 999;
+  color: black;
+}
+
+.navbar-left{
+  flex: 1;
+  font-size: 40px;
+}
+
 .App {
-    background-color: rgb(30, 30, 30);
+    background-color: rgb(203, 209, 201);
     display: flex;
     flex-direction: column;
     align-items: center;
