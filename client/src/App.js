@@ -4,32 +4,13 @@ import Dropzone from 'react-dropzone';
 import './App.css';
 
 function App() {
-  const [starttime, setStarttime] = useState('');
-  const [duration, setDuration] = useState('');
-  const [day, setDay] = useState('');
+  const [starttime, setStarttime] = useState('8');
+  const [duration, setDuration] = useState('1');
+  const [day, setDay] = useState('MON');
   const [semester, setSemester] = useState('');
   const [req, setReq] = useState(1);
   const [res, setRes] = useState([]);
-
-  const handleStarttimeChange = (e) => {
-    setStarttime(e.target.value);
-  };
-
-  const handleDurationChange = (e) => {
-    setDuration(e.target.value);
-  };
-  const handleSemesterChange = (e) => {
-    setSemester(e.target.value);
-  }
-
-  const handleReq = (e) => {
-    setReq(e.target.value);
-  }
-
-  const handleDay = (e) => {
-    setDay(e.target.value);
-  }
-
+  
   const handleExcelUpload = (files) => {
     const file = files[0];
     const reader = new FileReader();
@@ -43,7 +24,7 @@ function App() {
 
       const semarr = semester.split(',');
 
-      
+
       for(let j = 0; j<semarr.length; j++){
         for(let i=0; i<excelData.length; i++){
           for(const property in excelData[i]){
@@ -58,54 +39,50 @@ function App() {
       }
       const resData = [];
 
-      const countConsecutiveX = (excelData) => {
-        for (let i = 0; i < excelData.length; i++) {
-          if(excelData[i].day == day){
-            if(duration == 1){
-              if(excelData[i][starttime] == "X"){
-                const arr = Object.values(excelData[i]);
-                let count = 0;
-                for(let i=0; i<arr.length; i++){
-                  if(arr[i] == "X"){
-                    count++;
-                  }
+      for (let i = 0; i < excelData.length; i++) {
+        if(excelData[i].day == day){
+          if(duration == 1){
+            if(excelData[i][starttime] == "X"){
+              const arr = Object.values(excelData[i]);
+              let count = 0;
+              for(let i=0; i<arr.length; i++){
+                if(arr[i] == "X"){
+                  count++;
                 }
-                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
               }
-            }
-            else if(duration == 2){
-              if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X"){
-                const arr = Object.values(excelData[i]);
-                let count = 0;
-                for(let i=0; i<arr.length; i++){
-                  if(arr[i] == "X"){
-                    count++;
-                  }
-                }
-                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
-              }
-            }
-            else{
-              if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X" && excelData[i][(Number(starttime)+2).toString()] == "X"){
-                const arr = Object.values(excelData[i]);
-                let count = 0;
-                for(let i=0; i<arr.length; i++){
-                  if(arr[i] == "X"){
-                    count++;
-                  }
-                }
-                resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
-              }
-              }
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
             }
           }
-
-        const sortedData = resData.slice().sort((a, b) => b.FreeTime - a.FreeTime );
-        const slicedArray = sortedData.slice(0, req);
-        const reqData = slicedArray.map(({FreeTime, ...restData}) => restData);
-        setRes(reqData);
-      };
-      countConsecutiveX(excelData);
+          else if(duration == 2){
+            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X"){
+              const arr = Object.values(excelData[i]);
+              let count = 0;
+              for(let i=0; i<arr.length; i++){
+                if(arr[i] == "X"){
+                  count++;
+                }
+              }
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+            }
+          }
+          else{
+            if(excelData[i][starttime] == "X" && excelData[i][(Number(starttime)+1).toString()] == "X" && excelData[i][(Number(starttime)+2).toString()] == "X"){
+              const arr = Object.values(excelData[i]);
+              let count = 0;
+              for(let i=0; i<arr.length; i++){
+                if(arr[i] == "X"){
+                  count++;
+                }
+              }
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+            }
+            }
+          }
+        }
+      const sortedData = resData.slice().sort((a, b) => b.FreeTime - a.FreeTime );
+      const slicedArray = sortedData.slice(0, req);
+      const reqData = slicedArray.map(({FreeTime, ...restData}) => restData);
+      setRes(reqData);
     };
 
     reader.readAsArrayBuffer(file);
@@ -122,41 +99,60 @@ function App() {
   
   return (
     <>
-    <div className="navbar">
-      <div className="navbar-left">
-          <span>KIIT - INVIGILATION DUTY SCHEDULAR</span>
-      </div>
+    <div className='navbar'>
+      <h1>KIIT - INVIGILATION DUTY SCHEDULAR</h1>      
     </div>
     <div className="App">
       <div>
         <label>
-          Start-Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="number" value={starttime} onChange={handleStarttimeChange} className='input-field'/>
+          Start-Time &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </label>
+        <select className='select-container' onChange={e => setStarttime(e.target.value)}>
+          <option value={'8'}>8:00 AM</option>
+          <option value={'9'}>9:00 AM</option>
+          <option value={'10'}>10:00 AM</option>
+          <option value={'11'}>11:00 AM</option>
+          <option value={'12'}>12:00 AM</option>
+          <option value={'13'}>1:00 PM</option>
+          <option value={'14'}>2:00 PM</option>
+          <option value={'15'}>3:00 PM</option>
+          <option value={'16'}>4:00 PM</option>
+          <option value={'17'}>5:00 PM</option>
+        </select>
       </div>
       <div>
         <label>
           Exam-Duration &nbsp;&nbsp;
-          <input type="number" value={duration} onChange={handleDurationChange} className='input-field'/>
         </label>
+        <select className='select-container' onChange={e => setDuration(e.target.value)}>
+            <option value={'1'}>1 Hour</option>
+            <option value={'2'}>2 Hour</option>
+            <option value={'3'}>3 Hour</option>
+          </select>
       </div>
       <div>
         <label>
           Semester &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="string" value={semester} onChange={handleSemesterChange} className='input-field'/>
+          <input type="string" value={semester} onChange={e => setSemester(e.target.value)} className='input-field'/>
         </label>
       </div>
       <div>
         <label>
           Teachers Req &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="number" value={req} onChange={handleReq}  className='input-field'/>
+          <input type="number" value={req} onChange={e => setReq(e.target.value)}  className='input-field'/>
         </label>
       </div>
       <div>
         <label>
           Day &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <input type="string" value={day} onChange={handleDay}  className='input-field'/>
-        </label>
+        </label>          
+          <select className='select-container' onChange={e => setDay(e.target.value)}>
+            <option value={"MON"}>Monday</option>
+            <option value={"TUE"}>Tuesday</option>
+            <option value={"WED"}>Wednesday</option>
+            <option value={"THU"}>Thursday</option>
+            <option value={"FRI"}>Friday</option>
+          </select>
       </div>
       <div>
         <Dropzone onDrop={(acceptedFiles) => handleExcelUpload(acceptedFiles)}>
@@ -184,7 +180,7 @@ function App() {
             <th>Phone No.</th>
           </tr>
           {res?.map((row, index) => (
-            <tr>
+            <tr key={index}>
               <td>{index+1}</td>
               <td>{row.name}</td>
               <td>{row.phone}</td>
