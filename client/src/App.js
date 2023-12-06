@@ -50,7 +50,7 @@ function App() {
                   count++;
                 }
               }
-              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count, "day" : day});
             }
           }
           else if(duration == 2){
@@ -62,7 +62,7 @@ function App() {
                   count++;
                 }
               }
-              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count, "day" : day});
             }
           }
           else{
@@ -74,7 +74,7 @@ function App() {
                   count++;
                 }
               }
-              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count});
+              resData.push({"name" : excelData[i].name, "phone" : excelData[i].phone, "FreeTime" : count, "day" : day});
             }
             }
           }
@@ -132,7 +132,7 @@ function App() {
       </div>
       <div>
         <label>
-          Semester &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          Semester/Year &nbsp;&nbsp;&nbsp;&nbsp;
           <input type="string" value={semester} onChange={e => setSemester(e.target.value)} className='input-field'/>
         </label>
       </div>
