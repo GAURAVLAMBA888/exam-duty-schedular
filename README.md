@@ -1,4 +1,4 @@
-# Invigilation Duty Scheduler
+# Exam Duty Scheduler
 
 ## Tech stack used
 

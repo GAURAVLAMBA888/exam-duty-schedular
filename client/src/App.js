@@ -100,7 +100,7 @@ function App() {
   return (
     <>
     <div className='navbar'>
-      <h1>KIIT - INVIGILATION DUTY SCHEDULAR</h1>      
+      <h1>KIIT - EXAM DUTY SCHEDULAR</h1>      
     </div>
     <div className="App">
       <div>
